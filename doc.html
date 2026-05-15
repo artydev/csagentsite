@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - csagent</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        h2 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .code-block {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        .note {
+            background-color: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>csagent</h1>
+        <p>Agent d'assistance au codage autonome multi-plateformes</p>
+    </div>
+
+    <div class="section">
+        <h2>Présentation</h2>
+        <p><span class="highlight">csagent</span> est un agent d'assistance au codage autonome, écrit en C# (.NET 8), conçu pour aider les agents de l'administration à automatiser leurs tâches de développement informatique.</p>
+        
+        <div class="warning">
+            <strong>Attention :</strong> Cette solution est spécifiquement destinée aux agents de l'administration qui ne peuvent pas utiliser les LLM du marché (comme ChatGPT, Claude, etc.) en raison de contraintes de sécurité ou de confidentialité.
+        </div>
+        
+        <p>Contrairement aux solutions basées sur des LLM publics, <span class="highlight">csagent</span> peut être configuré pour utiliser des modèles locaux ou privés, garantissant ainsi la protection des données sensibles.</p>
+    </div>
+
+    <div class="section">
+        <h2>Fonctionnalités principales</h2>
+        <ul>
+            <li><strong>Multi-plateforme :</strong> Fonctionne sous Windows, Linux et macOS</li>
+            <li><strong>Interaction avec les LLM :</strong> Communique avec tout LLM compatible OpenAI (par défaut : Qwen3-Coder via ALBERT/Etalab)</li>
+            <li><strong>Gestion de fichiers :</strong> Lecture et écriture de fichiers, exploration de répertoires</li>
+            <li><strong>Exécution de commandes :</strong> Exécution de commandes shell avec gestion des retours</li>
+            <li><strong>Sessions persistantes :</strong> Historique de conversation stocké dans un fichier JSON</li>
+            <li><strong>Sécurité :</strong> Modes <span class="highlight">dry-run</span> et <span class="highlight">confirm</span> pour prévisualisation et validation</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Utilisation</h2>
+        <p>La commande de base est la suivante :</p>
+        
+        <div class="code-block">
+csagent &lt;fichier-mémoire&gt; [&lt;prompt-ou-fichier&gt;] [options]
+        </div>
+        
+        <h3>Arguments</h3>
+        <table>
+            <tr>
+                <th>Argument</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td><span class="highlight">fichier-mémoire</span></td>
+                <td>Chemin vers le fichier JSON stockant l'historique de conversation. Créé automatiquement lors de la première exécution.</td>
+            </tr>
+            <tr>
+                <td><span class="highlight">prompt-ou-fichier</span></td>
+                <td>Description de la tâche (sous forme de chaîne), ou chemin vers un fichier texte contenant le prompt. À omettre pour continuer une session précédente.</td>
+            </tr>
+        </table>
+        
+        <h3>Options</h3>
+        <table>
+            <tr>
+                <th>Option</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td><span class="highlight">--dry-run</span></td>
+                <td>Affiche les appels d'outils mais ne les exécute pas (aperçu sécurisé).</td>
+            </tr>
+            <tr>
+                <td><span class="highlight">--confirm</span></td>
+                <td>Demande une confirmation Y/n avant chaque exécution de commande shell ou écriture de fichier.</td>
+            </tr>
+            <tr>
+                <td><span class="highlight">--max-steps N</span></td>
+                <td>Nombre maximum d'itérations de l'agent (par défaut : 30).</td>
+            </tr>
+            <tr>
+                <td><span class="highlight">--model NOM</span></td>
+                <td>Remplace le modèle LLM utilisé (par défaut : Qwen/Qwen3-Coder-30B-A3B-Instruct).</td>
+            </tr>
+            <tr>
+                <td><span class="highlight">--endpoint URL</span></td>
+                <td>Remplace l'URL de base de l'API.</td>
+            </tr>
+            <tr>
+                <td><span class="highlight">--help</span></td>
+                <td>Affiche l'aide d'utilisation.</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Exemples d'utilisation</h2>
+        
+        <h3>Première exécution - création de mémoire et attribution d'une tâche</h3>
+        <div class="code-block">
+csagent.exe memory.json "Écrire un serveur HTTP Python qui sert le répertoire courant."
+        </div>
+        
+        <h3>Chargement d'une tâche depuis un fichier</h3>
+        <div class="code-block">
+csagent.exe memory.json task.txt
+        </div>
+        
+        <h3>Reprise d'une session précédente</h3>
+        <div class="code-block">
+csagent.exe memory.json
+        </div>
+        
+        <h3>Aperçu de ce que l'agent ferait (pas d'exécution)</h3>
+        <div class="code-block">
+csagent.exe memory.json "Refactoriser main.py" --dry-run
+        </div>
+        
+        <h3>Demande de confirmation avant chaque action</h3>
+        <div class="code-block">
+csagent.exe memory.json "Nettoyer tous les fichiers .tmp" --confirm
+        </div>
+        
+        <h3>Utilisation d'un modèle différent (GPT-4o)</h3>
+        <div class="code-block">
+csagent.exe memory.json "Ajouter des tests unitaires" \
+    --model gpt-4o \
+    --endpoint https://api.openai.com/v1
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Outils disponibles</h2>
+        <p>L'agent peut utiliser les outils suivants :</p>
+        
+        <table>
+            <tr>
+                <th>Outil</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td><span class="highlight">write_file(path, content)</span></td>
+                <td>Créer ou écraser un fichier texte UTF-8. Les répertoires parents sont créés automatiquement.</td>
+            </tr>
+            <tr>
+                <td><span class="highlight">read_file(path)</span></td>
+                <td>Lire et retourner le contenu d'un fichier. Refuse les fichiers > 512 Ko.</td>
+            </tr>
+            <tr>
+                <td><span class="highlight">list_dir(path?, recursive?)</span></td>
+                <td>Lister les fichiers et sous-répertoires.</td>
+            </tr>
+            <tr>
+                <td><span class="highlight">sh(cmd)</span></td>
+                <td>Exécuter une commande shell (cmd.exe sur Windows, /bin/sh ailleurs). Timeout de 60 secondes. Le code de sortie est rapporté au modèle.</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Configuration</h2>
+        
+        <h3>Prérequis</h3>
+        <ul>
+            <li>SDK .NET 8 — https://dotnet.microsoft.com/download</li>
+            <li>Une clé API pour un endpoint compatible OpenAI</li>
+            <li>Par défaut : [ALBERT (Etalab)](https://albert.api.etalab.gouv.fr) — <span class="highlight">ALBERT_API_KEY</span></li>
+            <li>Ou tout autre API compatible OpenAI — <span class="highlight">OPENAI_API_KEY</span></li>
+        </ul>
+        
+        <h3>Configuration de la clé API</h3>
+        <div class="code-block">
+# Linux / macOS
+export ALBERT_API_KEY=your-key-here
+
+# Windows (cmd)
+set ALBERT_API_KEY=your-key-here
+
+# Windows (PowerShell)
+$Env:ALBERT_API_KEY = "your-key-here"
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Sécurité</h2>
+        <div class="warning">
+            <strong>Attention :</strong> La commande <span class="highlight">sh</span> exécutera <strong>toute commande</strong> que le modèle décidera de lancer.
+        </div>
+        
+        <ul>
+            <li>Utilisez <span class="highlight">--confirm</span> lors de l'exécution dans un espace de travail sensible.</li>
+            <li>Utilisez <span class="highlight">--dry-run</span> pour auditer une session avant exécution.</li>
+            <li>Ne stockez jamais votre clé API dans <span class="highlight">memory.json</span> ou tout fichier suivi.</li>
+            <li>Gardez le fichier de mémoire hors des répertoires contenant des secrets.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Intérêt dans le cadre de l'assistance au codage</h2>
+        <p><span class="highlight">csagent</span> est particulièrement utile pour les agents de l'administration car il permet :</p>
+        
+        <ul>
+            <li><strong>Automatisation des tâches répétitives :</strong> Génération de code, nettoyage de fichiers, configuration de projets</li>
+            <li><strong>Protection des données :</strong> Utilisation de modèles locaux ou privés sans transmission de données vers des services externes</li>
+            <li><strong>Collaboration sécurisée :</strong> Capacité à travailler dans des environnements restreints où les LLM publics ne sont pas autorisés</li>
+            <li><strong>Prise en charge multi-plateforme :</strong> Fonctionne identiquement sur Windows, Linux et macOS</li>
+            <li><strong>Contrôle total :</strong> Mode dry-run et confirmations permettent de valider chaque action avant exécution</li>
+        </ul>
+        
+        <div class="note">
+            <strong>Note :</strong> Contrairement aux solutions basées sur des LLM publics, <span class="highlight">csagent</span> est conçu pour fonctionner dans des environnements où l'accès aux services cloud est restreint ou interdit, ce qui est fréquent dans les administrations publiques.
+        </div>
+    </div>
+
+    <div>Dowload</div>
+     <a href="./CsAgent.exe">Download CsAgent</a>
+    <div style="margin-top: 20px;">
+        md5: ee90d9db5278159dd10c3fe13ed0dad3
+    </div>
+
+    <div class="footer">
+        <p>Documentation de csagent - Agent d'assistance au codage autonome</p>
+        <p>© 2026 par Salvatore Di Dio</p>
+    </div>
+</body>
+</html>

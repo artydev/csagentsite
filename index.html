@@ -1,11 +1,404 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CssAgent</title>
+    <title>csagent — Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #f5f4f0;
+            --surface: #ffffff;
+            --border: #e0ddd6;
+            --text: #1a1917;
+            --muted: #0d0c0b;
+            --accent: #1a1917;
+            --tag-bg: #eeecea;
+            --mono: 'IBM Plex Mono', monospace;
+            --sans: 'IBM Plex Sans', sans-serif;
+            --code-bg: #1a1917;
+            --code-text: #d4d0c8;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 15px;
+            line-height: 1.65;
+        }
+
+        /* Layout */
+        .page {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 60px 24px 100px;
+        }
+
+        /* Header */
+        header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 32px;
+            margin-bottom: 48px;
+        }
+
+        .badge {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        header h1 {
+            font-size: 28px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: var(--muted);
+            font-weight: 300;
+            max-width: 520px;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 48px;
+        }
+
+        h2 {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        p { margin-bottom: 14px; }
+        p:last-child { margin-bottom: 0; }
+
+        /* Lists */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            padding: 7px 0;
+            padding-left: 16px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        ul li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        ul li:last-child { border-bottom: none; }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead tr {
+            border-bottom: 2px solid var(--border);
+        }
+
+        th {
+            text-align: left;
+            font-weight: 500;
+            font-size: 12px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--muted);
+            padding: 0 16px 10px 0;
+        }
+
+        td {
+            padding: 10px 16px 10px 0;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        td:first-child {
+            font-family: var(--mono);
+            font-size: 13px;
+            white-space: nowrap;
+            color: var(--text);
+            width: 220px;
+        }
+
+        td:last-child {
+            color: var(--muted);
+        }
+
+        /* Code blocks */
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            font-family: var(--mono);
+            font-size: 13px;
+            padding: 18px 20px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 16px 0;
+            line-height: 1.6;
+        }
+
+        code {
+            font-family: var(--mono);
+            font-size: 13px;
+            background: var(--tag-bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        /* Notice boxes */
+        .notice {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            padding: 14px 18px;
+            border-radius: 0 4px 4px 0;
+            font-size: 14px;
+            color: var(--muted);
+            margin: 20px 0;
+        }
+
+        .notice strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        /* Sub-heading */
+        h3 {
+            font-size: 14px;
+            font-weight: 500;
+            margin: 28px 0 12px;
+            color: var(--text);
+        }
+
+        /* Download block */
+        .download-block {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .download-block .meta {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .download-block .meta span {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .download-link {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            font-family: var(--sans);
+            font-size: 13px;
+            font-weight: 500;
+            padding: 9px 20px;
+            border-radius: 3px;
+            text-decoration: none;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+            transition: opacity 0.15s;
+        }
+
+        .download-link:hover { opacity: 0.75; }
+
+        /* Footer */
+        footer {
+            margin-top: 64px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--muted);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to CsAgent</h1>
+<div class="page">
+
+    <header>
+        <div class="badge">Documentation</div>
+        <h1>csagent</h1>
+        <p>Agent d'assistance au codage autonome multi-plateformes, écrit en C# (.NET 8).</p>
+    </header>
+
+    <section>
+        <h2>Présentation</h2>
+        <p>csagent est conçu pour aider les agents de l'administration à automatiser leurs tâches de développement informatique, sans recours aux LLM publics.</p>
+        <div class="notice">
+            <strong>Usage restreint.</strong> Cette solution est destinée aux environnements où les services cloud publics (ChatGPT, Claude, etc.) sont interdits. csagent peut être configuré avec des modèles locaux ou privés.
+        </div>
+    </section>
+
+    <section>
+        <h2>Fonctionnalités</h2>
+        <ul>
+            <li><strong>Multi-plateforme</strong> — Windows, Linux et macOS</li>
+            <li><strong>Compatible OpenAI</strong> — tout LLM exposant une API compatible (par défaut : Qwen3-Coder via ALBERT/Etalab)</li>
+            <li><strong>Gestion de fichiers</strong> — lecture, écriture, exploration de répertoires</li>
+            <li><strong>Exécution de commandes</strong> — shell avec gestion des codes de retour</li>
+            <li><strong>Sessions persistantes</strong> — historique stocké dans un fichier JSON</li>
+            <li><strong>Modes sécurisés</strong> — <code>--dry-run</code> et <code>--confirm</code> pour prévisualisation et validation</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Utilisation</h2>
+        <pre>csagent &lt;fichier-mémoire&gt; [&lt;prompt-ou-fichier&gt;] [options]</pre>
+
+        <h3>Arguments</h3>
+        <table>
+            <thead><tr><th>Argument</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td>fichier-mémoire</td>
+                    <td>Fichier JSON de l'historique. Créé automatiquement à la première exécution.</td>
+                </tr>
+                <tr>
+                    <td>prompt-ou-fichier</td>
+                    <td>Tâche sous forme de chaîne, ou chemin vers un fichier texte. Omettre pour reprendre une session.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Options</h3>
+        <table>
+            <thead><tr><th>Option</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>--dry-run</td><td>Affiche les appels d'outils sans les exécuter.</td></tr>
+                <tr><td>--confirm</td><td>Demande confirmation avant chaque commande shell ou écriture.</td></tr>
+                <tr><td>--max-steps N</td><td>Nombre maximum d'itérations (défaut : 30).</td></tr>
+                <tr><td>--model NOM</td><td>Remplace le modèle LLM (défaut : Qwen/Qwen3-Coder-30B-A3B-Instruct).</td></tr>
+                <tr><td>--endpoint URL</td><td>Remplace l'URL de base de l'API.</td></tr>
+                <tr><td>--help</td><td>Affiche l'aide.</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Exemples</h2>
+
+        <h3>Première exécution</h3>
+        <pre>csagent.exe memory.json "Écrire un serveur HTTP Python qui sert le répertoire courant."</pre>
+
+        <h3>Tâche depuis un fichier</h3>
+        <pre>csagent.exe memory.json task.txt</pre>
+
+        <h3>Reprendre une session</h3>
+        <pre>csagent.exe memory.json</pre>
+
+        <h3>Mode aperçu (sans exécution)</h3>
+        <pre>csagent.exe memory.json "Refactoriser main.py" --dry-run</pre>
+
+        <h3>Mode confirmation</h3>
+        <pre>csagent.exe memory.json "Nettoyer tous les fichiers .tmp" --confirm</pre>
+
+        <h3>Modèle personnalisé</h3>
+        <pre>csagent.exe memory.json "Ajouter des tests unitaires" \
+    --model gpt-4o \
+    --endpoint https://api.openai.com/v1</pre>
+    </section>
+
+    <section>
+        <h2>Outils disponibles</h2>
+        <table>
+            <thead><tr><th>Outil</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>write_file(path, content)</td><td>Crée ou écrase un fichier UTF-8. Répertoires parents créés automatiquement.</td></tr>
+                <tr><td>read_file(path)</td><td>Lit et retourne le contenu d'un fichier (limite : 512 Ko).</td></tr>
+                <tr><td>list_dir(path?, recursive?)</td><td>Liste fichiers et sous-répertoires.</td></tr>
+                <tr><td>sh(cmd)</td><td>Exécute une commande shell (cmd.exe / /bin/sh). Timeout : 60 s. Code de sortie rapporté.</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Configuration</h2>
+
+        <h3>Prérequis</h3>
+        <ul>
+            <li>SDK .NET 8 — <a href="https://dotnet.microsoft.com/download">dotnet.microsoft.com</a></li>
+            <li>Clé API pour un endpoint compatible OpenAI</li>
+            <li>Par défaut : ALBERT (Etalab) — variable <code>ALBERT_API_KEY</code></li>
+            <li>Autre API compatible — variable <code>OPENAI_API_KEY</code></li>
+        </ul>
+
+        <h3>Clé API</h3>
+        <pre># Linux / macOS
+export ALBERT_API_KEY=your-key-here
+
+# Windows (cmd)
+set ALBERT_API_KEY=your-key-here
+
+# Windows (PowerShell)
+$Env:ALBERT_API_KEY = "your-key-here"</pre>
+    </section>
+
+    <section>
+        <h2>Sécurité</h2>
+        <div class="notice">
+            <strong>Attention.</strong> La commande <code>sh</code> exécutera toute commande décidée par le modèle. Utilisez <code>--confirm</code> dans un espace de travail sensible.
+        </div>
+        <ul>
+            <li>Utiliser <code>--dry-run</code> pour auditer avant exécution</li>
+            <li>Ne jamais stocker la clé API dans <code>memory.json</code> ou un fichier suivi</li>
+            <li>Garder le fichier de mémoire hors des répertoires contenant des secrets</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Téléchargement</h2>
+        <div class="download-block">
+            <div class="meta">
+                <span>CsAgent.exe</span><br>
+                md5 : ee90d9db5278159dd10c3fe13ed0dad3
+            </div>
+            <a class="download-link" href="./CsAgent.exe">Télécharger</a>
+        </div>
+    </section>
+
+    <footer>
+        <span>csagent — Agent d'assistance au codage autonome</span>
+        <span>© 2026 Salvatore Di Dio</span>
+    </footer>
+
+</div>
 </body>
 </html>
